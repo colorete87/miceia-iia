@@ -1,0 +1,6 @@
+jupynium/
+.run/
+.ipynb_checkpoints/
+Untitled*.ipynb
+Untitled*.ju.py
+.jupykit-run/

@@ -1,0 +1,1 @@
+/home/fzacchigna/projects/jupykit/jupykit.sh
