@@ -239,7 +239,6 @@ Veamos las métricas:
 """
 
 # %%
-
 n = 5
 
 if n <= 5:
@@ -255,11 +254,11 @@ for key, value in metrics.items():
     print(f"{key}: {value}")
 print()
 
+print("Solución propia")
 solution, metrics = search_algorithm(n)
 for key, value in metrics.items():
     print(f"{key}: {value}")
 print()
-
 
 # %%
 # %%timeit
@@ -349,5 +348,3 @@ Y las acciones que el agente debería aplicar para llegar al objetivo:
 # %%
 for act in solution.solution():
     print(act)
-
-# %%
