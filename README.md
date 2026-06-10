@@ -2,4 +2,9 @@
 
 Este repo es para entregar ejercicios de IIA (Introducción a IA).
 
-Usamos https://github.com/colorete87/jupykit
+Ejercicios:
+
+- [Ejercicio2](./exercise2/exercise_2.ipynb)
+- [Ejercicio3]()
+- [Ejercicio5]()
+- [Ejercicio6]()

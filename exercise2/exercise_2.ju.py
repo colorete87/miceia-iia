@@ -3,7 +3,7 @@
 # Ejercicio Módulo 2
 **Inteligencia Artificial - CEIA - FIUBA**
 
-**INSERTE AQUÍ SU NOMBRE**
+**Federico Zacchigna**
 
 En este ejercicio deben implementar un algoritmo de búsqueda que no sea **Búsqueda Primero en Anchura (BFS)** para resolver el problema de la Torre de Hanoi. La nota máxima dependerá del algoritmo implementado:
 
@@ -34,119 +34,15 @@ from aima_libs.aima import PriorityQueue as AimaPriorityQueue
 import numpy as np
 
 
-def search_algorithm_breadth(number_disks=5) -> (NodeHanoi, dict):
-    """
-    Anchura
-    """
+# %%
+def search_algorithm(number_disks=5) -> (NodeHanoi, dict):
 
-    # Inicializamos el problema
     list_disks = [i for i in range(number_disks, 0, -1)]
     initial_state = StatesHanoi(list_disks, [], [], max_disks=number_disks)
     goal_state = StatesHanoi([], [], list_disks, max_disks=number_disks)
     problem = ProblemHanoi(initial=initial_state, goal=goal_state)
 
-    # Inicialización
-    frontier = [NodeHanoi(problem.initial)]
-    explored = set()
-    node_explored = 0
-
-    # Búsqueda
-    while len(frontier) != 0:
-        # Exploramos el primer nodo de la frontera
-        node = frontier.pop()
-        node_explored += 1
-        explored.add(node.state)  # Verificamos si llegamos al objetivo
-
-        # Encontramos el problema
-        if problem.goal_test(node.state):
-            metrics = {
-                "solution_found": True,
-                "nodes_explored": node_explored,
-                "states_visited": len(explored),
-                "nodes_in_frontier": len(frontier),
-                "max_depth": node.depth,
-                "cost_total": node.state.accumulated_cost,
-            }
-            return node, metrics
-
-        # Agregamos a la frontera los nodos sucesores que no hayan sido visitados
-        for next_node in node.expand(problem):
-            # "Cache" de nodos
-            if next_node.state not in explored:
-                frontier.insert(0, next_node)
-
-    # Si no se encuentra solución, devolvemos métricas igualmente
-    metrics = {
-        "solution_found": False,
-        "nodes_explored": node_explored,
-        "states_visited": len(explored),
-        "nodes_in_frontier": len(frontier),
-        "max_depth": node.depth,
-        "cost_total": None,
-    }
-
-    return None, metrics
-
-
-def search_algorithm_depth(number_disks=5) -> (NodeHanoi, dict):
-    """
-    Profundidad
-    """
-
-    # Inicializamos el problema
-    list_disks = [i for i in range(number_disks, 0, -1)]
-    initial_state = StatesHanoi(list_disks, [], [], max_disks=number_disks)
-    goal_state = StatesHanoi([], [], list_disks, max_disks=number_disks)
-    problem = ProblemHanoi(initial=initial_state, goal=goal_state)
-
-    # Inicialización
-    frontier = [NodeHanoi(problem.initial)]
-    explored = set()
-    node_explored = 0
-
-    # Búsqueda
-    while len(frontier) != 0:
-        # Exploramos el primer nodo de la frontera
-        node = frontier.pop()
-        node_explored += 1
-        explored.add(node.state)  # Verificamos si llegamos al objetivo
-
-        # Encontramos el problema
-        if problem.goal_test(node.state):
-            metrics = {
-                "solution_found": True,
-                "nodes_explored": node_explored,
-                "states_visited": len(explored),
-                "nodes_in_frontier": len(frontier),
-                "max_depth": node.depth,
-                "cost_total": node.state.accumulated_cost,
-            }
-            return node, metrics
-
-        # Agregamos a la frontera los nodos sucesores que no hayan sido visitados
-        for next_node in node.expand(problem):
-            # "Cache" de nodos
-            if next_node.state not in explored:
-                frontier.append(next_node)
-
-    # Si no se encuentra solución, devolvemos métricas igualmente
-    metrics = {
-        "solution_found": False,
-        "nodes_explored": node_explored,
-        "states_visited": len(explored),
-        "nodes_in_frontier": len(frontier),
-        "max_depth": node.depth,
-        "cost_total": None,
-    }
-
-    return None, metrics
-
-
-def search_algorithm(number_disks=5):
-    """
-    Heurística
-    """
-
+    ##### EDITAR ESTA ZONA
     def h_function(node, number_disks):
         """
         Heurística propia:
@@ -182,12 +78,19 @@ def search_algorithm(number_disks=5):
     def cost_function(node):
         return h_function(node, number_disks) + g_function(node)
 
-    # Inicializamos el problema
-    list_disks = [i for i in range(number_disks, 0, -1)]
-    initial_state = StatesHanoi(list_disks, [], [], max_disks=number_disks)
-    goal_state = StatesHanoi([], [], list_disks, max_disks=number_disks)
-    problem = ProblemHanoi(initial=initial_state, goal=goal_state)
+    # Inicializamos las salidas, pero reemplazar con lo que se quiera usar.
+    metrics = {
+        "solution_found": True,
+        "nodes_explored": None,
+        "states_visited": None,
+        "nodes_in_frontier": None,
+        "max_depth": None,
+        "cost_total": None,
+    }
+    solution = NodeHanoi(initial_state)
 
+    # TODO: Completar con el algoritmo de búsqueda que desees implementar
+    #####
     # Inicialización
     frontier = AimaPriorityQueue(order="min", f=cost_function)
     initial_node = NodeHanoi(problem.initial)
@@ -221,6 +124,7 @@ def search_algorithm(number_disks=5):
                 frontier.append(next_node)
 
     # Si no se encuentra solución
+    solution = None
     metrics = {
         "solution_found": False,
         "nodes_explored": node_explored,
@@ -230,97 +134,16 @@ def search_algorithm(number_disks=5):
         "cost_total": None,
     }
 
-    return None, metrics
+    return solution, metrics
 
 
 # %% [markdown]
 """
-Veamos las métricas:
+Se prueba la función:
 """
 
 # %%
-n = 5
-
-if n <= 5:
-    print("Solución en anchura")
-    solution, metrics = search_algorithm_breadth(n)
-    for key, value in metrics.items():
-        print(f"{key}: {value}")
-    print()
-
-print("Solución en produnidad")
-solution, metrics = search_algorithm_depth(n)
-for key, value in metrics.items():
-    print(f"{key}: {value}")
-print()
-
-print("Solución propia")
-solution, metrics = search_algorithm(n)
-for key, value in metrics.items():
-    print(f"{key}: {value}")
-print()
-
-# %%
-# %%timeit
-if n <= 5:
-    solution, metrics = search_algorithm_breadth(number_disks=n)
-
-# %%
-# %%timeit
-solution, metrics = search_algorithm_depth(number_disks=n)
-
-# %%
-# %%timeit
-solution, metrics = search_algorithm(number_disks=n)
-
-# %%
-if n <= 5:
-    import tracemalloc
-
-    tracemalloc.start()
-
-    solution, metrics = search_algorithm_breadth(number_disks=n)
-
-    # Para medir memoria consumida usamos el pico de memoria
-    _, memory_peak = tracemalloc.get_traced_memory()
-    memory_peak /= 1024 * 1024
-    tracemalloc.stop()
-
-    print(
-        f"Pico de memoria ocupada: {round(memory_peak, 2)} [MB]",
-    )
-
-# %%
-import tracemalloc
-
-tracemalloc.start()
-
-solution, metrics = search_algorithm_depth(number_disks=n)
-
-# Para medir memoria consumida usamos el pico de memoria
-_, memory_peak = tracemalloc.get_traced_memory()
-memory_peak /= 1024 * 1024
-tracemalloc.stop()
-
-print(
-    f"Pico de memoria ocupada: {round(memory_peak, 2)} [MB]",
-)
-
-# %%
-import tracemalloc
-
-tracemalloc.start()
-
-solution, metrics = search_algorithm(number_disks=n)
-
-# Para medir memoria consumida usamos el pico de memoria
-_, memory_peak = tracemalloc.get_traced_memory()
-memory_peak /= 1024 * 1024
-tracemalloc.stop()
-
-print(
-    f"Pico de memoria ocupada: {round(memory_peak, 2)} [MB]",
-)
+solution, metrics = search_algorithm(number_disks=5)
 
 # %% [markdown]
 """
