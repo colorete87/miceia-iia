@@ -77,7 +77,6 @@ def initialize_random_state(n: int = 8):
 estado_inicial = initialize_random_state()
 print("Estado inicial aleatorio:", estado_inicial)
 
-
 # %% [markdown]
 """
 ## Generación de vecinos
@@ -149,7 +148,6 @@ print(f"Cantidad de vecinos generados: {len(vecinos)}")
 print("Algunos vecinos:")
 for vecino in vecinos[:5]:
     print(vecino)
-
 
 # %% [markdown]
 """
@@ -460,24 +458,30 @@ Ejecutemos 5 veces la función:
 # %%
 initial_temp = 1.0
 cooling_rate = 0.95
-_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS)
+_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS) # Cambia a initial_temp y cooling_rate con los valores que deseas usar.
 
 # %%
-_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS)
+initial_temp = 0.5
+cooling_rate = 0.95
+_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS) # Cambia a initial_temp y cooling_rate con los valores que deseas usar.
 
 # %%
-_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS)
+initial_temp = 0.25
+cooling_rate = 0.95
+_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS) # Cambia a initial_temp y cooling_rate con los valores que deseas usar.
 
 # %%
-_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS)
+initial_temp = 1.0
+cooling_rate = 0.9
+_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS) # Cambia a initial_temp y cooling_rate con los valores que deseas usar.
 
 # %%
-_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS)
+initial_temp = 1.0
+cooling_rate = 0.8
+_ = simulated_annealing(8, initial_temp, cooling_rate, max_steps=MAX_STEPS) # Cambia a initial_temp y cooling_rate con los valores que deseas usar.
 
 # %% [markdown]
 """
-Escribe aqui cuantas veces de las 5 ejecuciones se encontró la solucion: 
-
-<<ESCRIBE AQUÍ>>
+Escribe aqui cuantas veces de las 5 ejecuciones se encontró la solucion: 5 de 5
 """
 
