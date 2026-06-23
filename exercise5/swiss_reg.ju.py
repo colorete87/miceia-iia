@@ -74,6 +74,23 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
 ##### COMPLETAR AQUI LO PEDIDO
+pipeline_linear = Pipeline(steps=[
+    ('scaler', StandardScaler()),
+    ('regressor', LinearRegression())
+])
+
+pipeline_linear.fit(X_train, y_train)
+y_pred = pipeline_linear.predict(X_test)
+
+mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("Regresión Lineal Múltiple")
+print("-------------------------")
+print(f"MAE: {mae:.3f}")
+print(f"MSE: {mse:.3f}")
+print(f"R2: {r2:.3f}")
 
 # %% [markdown]
 """
@@ -125,6 +142,35 @@ Paremos un momento para entender qué hacen LassoCV y RidgeCV antes de continuar
 alphas = np.logspace(-4, 1, 500)
 
 ##### COMPLETAR AQUI LO PEDIDO
+pipeline_lasso = Pipeline(steps=[
+    ('scaler', StandardScaler()),
+    ('regressor', LassoCV(alphas=alphas, cv=3, random_state=42))
+])
+
+pipeline_lasso.fit(X_train, y_train)
+y_pred_lasso = pipeline_lasso.predict(X_test)
+
+mae_lasso = mean_absolute_error(y_test, y_pred_lasso)
+mse_lasso = mean_squared_error(y_test, y_pred_lasso)
+r2_lasso = r2_score(y_test, y_pred_lasso)
+
+best_alpha = pipeline_lasso.named_steps['regressor'].alpha_
+coefs = pipeline_lasso.named_steps['regressor'].coef_
+features = X.columns
+
+print("Modelo Regularizado (Lasso)")
+print("---------------------------")
+print(f"Mejor valor de alpha: {best_alpha:.4f}")
+print(f"MAE: {mae_lasso:.3f}")
+print(f"MSE: {mse_lasso:.3f}")
+print(f"R2: {r2_lasso:.3f}\n")
+
+print("Coeficientes obtenidos:")
+for feat, coef in zip(features, coefs):
+    print(f"- {feat}: {coef:.4f}")
+
+eliminadas = [feat for feat, coef in zip(features, coefs) if coef == 0]
+print(f"\nVariables eliminadas (coeficiente = 0): {eliminadas}")
 
 
 
@@ -134,10 +180,10 @@ alphas = np.logspace(-4, 1, 500)
 
 Completá la siguiente tabla con las métricas obtenidas para cada uno de los modelos que entrenaste:
 
-| Modelo                        | MAE | MSE | $R^2$ |
-| ----------------------------- | --- | --- | ----- |
-| Regresión Lineal              |     |     |       |
-| Modelo Regularizado (L1 o L2) |     |     |       |
+| Modelo                        | MAE   | MSE    | $R^2$ |
+| ----------------------------- | ----- | ------ | ----- |
+| Regresión Lineal              | 6.094 | 64.457 | 0.574 |
+| Modelo Regularizado (Lasso)   | 5.995 | 64.294 | 0.576 |
 
 
 > ⚠️ Asegurate de cambiar el nombre del modelo `Modelo Regularizado (L1 o L2)` según el modelo que usaste (Lasso o Ridge).
